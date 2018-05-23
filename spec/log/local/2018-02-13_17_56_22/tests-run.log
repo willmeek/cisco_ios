@@ -1,0 +1,13 @@
+[00;32mBegin acceptance/ntp_server_spec.rb
+[00;00m[00;31mLoadError: cannot load such file -- spec_helper_acceptance
+[00;00m[00;31m/home/rsherman/workspace/cisco_ios/spec/acceptance/ntp_server_spec.rb:1
+[00;00m[00;31m/home/rsherman/workspace/cisco_ios/spec/acceptance/ntp_server_spec.rb:1
+[00;00m[00;31m/home/rsherman/workspace/cisco_ios/.bundle/gems/ruby/2.3.0/gems/beaker-3.31.0/bin/beaker:9
+[00;00m[00;31m/home/rsherman/.rbenv/versions/2.3.3/lib/ruby/gems/2.3.0/gems/bundler-1.13.7/exe/bundle:34
+[00;00m[00;31m/home/rsherman/.rbenv/versions/2.3.3/lib/ruby/gems/2.3.0/gems/bundler-1.13.7/exe/bundle:26
+[00;00m[00;31m/home/rsherman/.rbenv/versions/2.3.3/bin/bundle:22
+[00;00m[00;31m/home/rsherman/.rbenv/versions/2.3.3/bin/bundle:22
+[00;00m[00;32mBegin teardown
+[00;00m[00;32mEnd teardown
+[00;00m[01;31mWarning: acceptance/ntp_server_spec.rb errored in 0.00 seconds
+[00;00m

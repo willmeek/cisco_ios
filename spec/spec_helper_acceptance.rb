@@ -125,7 +125,9 @@ EOS
         on(host, "echo #{device_ip} #{device_hostname} >> /etc/hosts")
 
         # install puppet-resource_api on to the server
-        on(host, 'puppetserver gem install puppet-resource_api --no-ri --no-rdoc')
+        on(host, 'wget https://raw.githubusercontent.com/shermdog/puppet-resource_api/FM-6914/puppet-resource_api-1.2.0.gem')
+        on(host, 'puppetserver gem install puppet-resource_api-1.2.0.gem --no-ri --no-rdoc')
+        on(host, '/opt/puppetlabs/puppet/bin/gem install puppet-resource_api-1.2.0.gem ')
         on(host, 'puppet module install puppetlabs-resource_api')
         # install latest netdev stdlib on the server
         on(host, 'wget https://github.com/puppetlabs/netdev_stdlib/archive/master.tar.gz')

@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?xml-stylesheet type='text/xsl' href='junit.xsl'?>
+<testsuites>
+  <meta_test_info page_active='no-links' link_url=''/>
+  <testsuite name='tests' tests='1' errors='1' failures='0' skipped='0' pending='0' total='1' time='0.005127'>
+    <properties>
+      <property name='project' value='Beaker'/>
+      <property name='department' value='unknown'/>
+      <property name='created_by' value='rsherman'/>
+      <property name='host_tags' value='{}'/>
+      <property name='openstack_api_key' value=''/>
+      <property name='openstack_username' value=''/>
+      <property name='openstack_auth_url' value='/tokens'/>
+      <property name='openstack_tenant' value=''/>
+      <property name='openstack_keyname' value=''/>
+      <property name='openstack_network' value=''/>
+      <property name='openstack_region' value=''/>
+      <property name='openstack_volume_support' value='true'/>
+      <property name='jenkins_build_url' value=''/>
+      <property name='validate' value='false'/>
+      <property name='configure' value='false'/>
+      <property name='log_level' value='info'/>
+      <property name='trace_limit' value='10'/>
+      <property name='master-start-curl-retries' value='120'/>
+      <property name='masterless' value='false'/>
+      <property name='options_file' value=''/>
+      <property name='type' value='pe'/>
+      <property name='provision' value='false'/>
+      <property name='preserve_hosts' value='never'/>
+      <property name='root_keys' value='false'/>
+      <property name='quiet' value='false'/>
+      <property name='project_root' value='/home/rsherman/workspace/cisco_ios/.bundle/gems/ruby/2.3.0/gems/beaker-3.31.0/lib/beaker'/>
+      <property name='xml_dir' value='junit'/>
+      <property name='xml_file' value='beaker_junit.xml'/>
+      <property name='xml_time' value='beaker_times.xml'/>
+      <property name='xml_time_enabled' value='false'/>
+      <property name='xml_stylesheet' value='junit.xsl'/>
+      <property name='default_log_prefix' value='beaker_logs'/>
+      <property name='log_dir' value='log'/>
+      <property name='log_sut_event' value='sut.log'/>
+      <property name='color' value='true'/>
+      <property name='dry_run' value='false'/>
+      <property name='test_tag_and' value='[]'/>
+      <property name='test_tag_or' value='[]'/>
+      <property name='test_tag_exclude' value='[]'/>
+      <property name='timeout' value='900'/>
+      <property name='fail_mode' value='slow'/>
+      <property name='accept_all_exit_codes' value='false'/>
+      <property name='timesync' value='false'/>
+      <property name='disable_iptables' value='false'/>
+      <property name='set_env' value='true'/>
+      <property name='disable_updates' value='true'/>
+      <property name='repo_proxy' value='false'/>
+      <property name='package_proxy' value='false'/>
+      <property name='add_el_extras' value='false'/>
+      <property name='epel_url' value='http://dl.fedoraproject.org/pub/epel'/>
+      <property name='epel_url_archive' value='http://archive.fedoraproject.org/pub/archive/epel'/>
+      <property name='consoleport' value='443'/>
+      <property name='pe_dir' value='/opt/enterprise/dists'/>
+      <property name='pe_version_file' value='LATEST'/>
+      <property name='pe_version_file_win' value='LATEST-win'/>
+      <property name='host_env' value='{}'/>
+      <property name='host_name_prefix' value=''/>
+      <property name='ssh_env_file' value='~/.ssh/environment'/>
+      <property name='profile_d_env_file' value='/etc/profile.d/beaker_env.sh'/>
+      <property name='dot_fog' value='/home/rsherman/.fog'/>
+      <property name='ec2_yaml' value='config/image_templates/ec2.yaml'/>
+      <property name='help' value='false'/>
+      <property name='collect_perf_data' value='none'/>
+      <property name='puppetdb_port_ssl' value='8081'/>
+      <property name='puppetdb_port_nonssl' value='8080'/>
+      <property name='puppetserver_port' value='8140'/>
+      <property name='nodeclassifier_port' value='4433'/>
+      <property name='cache_files_locally' value='false'/>
+      <property name='aws_keyname_modifier' value='4984862237'/>
+      <property name='run_in_parallel' value='[]'/>
+      <property name='use_fog_credentials' value='true'/>
+      <property name='ssh' value='{:config=&gt;false, :verify_host_key=&gt;false, :auth_methods=&gt;[&quot;publickey&quot;], :port=&gt;22, :forward_agent=&gt;true, :keys=&gt;[&quot;/home/rsherman/.ssh/id_rsa&quot;], :user_known_hosts_file=&gt;&quot;/home/rsherman/.ssh/known_hosts&quot;, :keepalive=&gt;true}'/>
+      <property name='hosts_file' value='/home/rsherman/workspace/cisco_ios/spec/acceptance/nodesets/local.yml'/>
+      <property name='tests' value='[&quot;acceptance/ntp_server_spec.rb&quot;]'/>
+      <property name='command_line' value='/home/rsherman/workspace/cisco_ios/.bundle/gems/ruby/2.3.0/bin/beaker --no-provision --hosts acceptance/nodesets/local.yml --no-validate --no-configure --tests acceptance/ntp_server_spec.rb'/>
+      <property name='HOSTS' value='{:masterblaster=&gt;{:pe_dir=&gt;&quot;http://neptune.puppetlabs.lan/2017.3/ci-ready&quot;, :pe_ver=&gt;nil, :pe_upgrade_dir=&gt;nil, :pe_upgrade_ver=&gt;nil, :hypervisor=&gt;&quot;none&quot;, :ip=&gt;&quot;192.168.198.36&quot;, :platform=&gt;&quot;el-7-x86_64&quot;, :template=&gt;&quot;centos-7-x86_64&quot;, :roles=&gt;[&quot;agent&quot;, &quot;master&quot;, &quot;database&quot;, &quot;dashboard&quot;, &quot;default&quot;], :host_tags=&gt;{}}}'/>
+      <property name='nfs_server' value='none'/>
+      <property name='pooling_api' value='http://vmpooler.delivery.puppetlabs.net/'/>
+      <property name='home' value='/home/rsherman'/>
+      <property name='helper' value='[]'/>
+      <property name='load_path' value='[]'/>
+      <property name='pre_suite' value='[]'/>
+      <property name='post_suite' value='[]'/>
+      <property name='install' value='[]'/>
+      <property name='pre_cleanup' value='[]'/>
+      <property name='modules' value='[]'/>
+      <property name='logger' value='#&lt;Beaker::Logger:0x005584887ef088&gt;'/>
+      <property name='timestamp' value='2018-02-13 17:56:22 -0600'/>
+      <property name='beaker_version' value='3.31.0'/>
+      <property name='log_prefix' value='local'/>
+      <property name='xml_dated_dir' value='junit/local/2018-02-13_17_56_22'/>
+      <property name='log_dated_dir' value='log/local/2018-02-13_17_56_22'/>
+      <property name='logger_sut' value='#&lt;Beaker::Logger:0x005584887e8ee0&gt;'/>
+    </properties>
+    <testcase classname='acceptance' name='ntp_server_spec.rb' time='0.004788'>
+      <failure type='error' message='cannot load such file -- spec_helper_acceptance'>
+        <![CDATA[acceptance/ntp_server_spec.rb:1:in `require'\nacceptance/ntp_server_spec.rb:1:in `block in run_test'\n/home/rsherman/workspace/cisco_ios/.bundle/gems/ruby/2.3.0/gems/beaker-3.31.0/lib/beaker/test_case.rb:133:in `eval'\n/home/rsherman/workspace/cisco_ios/.bundle/gems/ruby/2.3.0/gems/beaker-3.31.0/lib/beaker/test_case.rb:133:in `block in run_test'\n/home/rsherman/.rbenv/versions/2.3.3/lib/ruby/2.3.0/benchmark.rb:308:in `realtime'\n/home/rsherman/workspace/cisco_ios/.bundle/gems/ruby/2.3.0/gems/beaker-3.31.0/lib/beaker/test_case.rb:130:in `run_test'\n/home/rsherman/workspace/cisco_ios/.bundle/gems/ruby/2.3.0/gems/beaker-3.31.0/lib/beaker/test_suite.rb:66:in `block in run'\n/home/rsherman/workspace/cisco_ios/.bundle/gems/ruby/2.3.0/gems/beaker-3.31.0/lib/beaker/test_suite.rb:63:in `each'\n/home/rsherman/workspace/cisco_ios/.bundle/gems/ruby/2.3.0/gems/beaker-3.31.0/lib/beaker/test_suite.rb:63:in `run'\n/home/rsherman/workspace/cisco_ios/.bundle/gems/ruby/2.3.0/gems/beaker-3.31.0/lib/beaker/test_suite.rb:112:in `run_and_raise_on_failure'\n/home/rsherman/workspace/cisco_ios/.bundle/gems/ruby/2.3.0/gems/beaker-3.31.0/lib/beaker/cli.rb:204:in `run_suite'\n/home/rsherman/workspace/cisco_ios/.bundle/gems/ruby/2.3.0/gems/beaker-3.31.0/lib/beaker/cli.rb:130:in `execute!'\n/home/rsherman/workspace/cisco_ios/.bundle/gems/ruby/2.3.0/gems/beaker-3.31.0/bin/beaker:9:in `<top (required)>'\n/home/rsherman/workspace/cisco_ios/.bundle/gems/ruby/2.3.0/bin/beaker:22:in `load'\n/home/rsherman/workspace/cisco_ios/.bundle/gems/ruby/2.3.0/bin/beaker:22:in `<top (required)>'\n/home/rsherman/.rbenv/versions/2.3.3/lib/ruby/gems/2.3.0/gems/bundler-1.13.7/lib/bundler/cli/exec.rb:74:in `load'\n/home/rsherman/.rbenv/versions/2.3.3/lib/ruby/gems/2.3.0/gems/bundler-1.13.7/lib/bundler/cli/exec.rb:74:in `kernel_load'\n/home/rsherman/.rbenv/versions/2.3.3/lib/ruby/gems/2.3.0/gems/bundler-1.13.7/lib/bundler/cli/exec.rb:27:in `run'\n/home/rsherman/.rbenv/versions/2.3.3/lib/ruby/gems/2.3.0/gems/bundler-1.13.7/lib/bundler/cli.rb:332:in `exec'\n/home/rsherman/.rbenv/versions/2.3.3/lib/ruby/gems/2.3.0/gems/bundler-1.13.7/lib/bundler/vendor/thor/lib/thor/command.rb:27:in `run'\n/home/rsherman/.rbenv/versions/2.3.3/lib/ruby/gems/2.3.0/gems/bundler-1.13.7/lib/bundler/vendor/thor/lib/thor/invocation.rb:126:in `invoke_command'\n/home/rsherman/.rbenv/versions/2.3.3/lib/ruby/gems/2.3.0/gems/bundler-1.13.7/lib/bundler/vendor/thor/lib/thor.rb:359:in `dispatch'\n/home/rsherman/.rbenv/versions/2.3.3/lib/ruby/gems/2.3.0/gems/bundler-1.13.7/lib/bundler/cli.rb:20:in `dispatch'\n/home/rsherman/.rbenv/versions/2.3.3/lib/ruby/gems/2.3.0/gems/bundler-1.13.7/lib/bundler/vendor/thor/lib/thor/base.rb:440:in `start'\n/home/rsherman/.rbenv/versions/2.3.3/lib/ruby/gems/2.3.0/gems/bundler-1.13.7/lib/bundler/cli.rb:11:in `start'\n/home/rsherman/.rbenv/versions/2.3.3/lib/ruby/gems/2.3.0/gems/bundler-1.13.7/exe/bundle:34:in `block in <top (required)>'\n/home/rsherman/.rbenv/versions/2.3.3/lib/ruby/gems/2.3.0/gems/bundler-1.13.7/lib/bundler/friendly_errors.rb:100:in `with_friendly_errors'\n/home/rsherman/.rbenv/versions/2.3.3/lib/ruby/gems/2.3.0/gems/bundler-1.13.7/exe/bundle:26:in `<top (required)>'\n/home/rsherman/.rbenv/versions/2.3.3/bin/bundle:22:in `load'\n/home/rsherman/.rbenv/versions/2.3.3/bin/bundle:22:in `<main>']]>
+      </failure>
+      <system-out>
+        <![CDATA[LoadError: cannot load such file -- spec_helper_acceptance
+/home/rsherman/workspace/cisco_ios/spec/acceptance/ntp_server_spec.rb:1
+/home/rsherman/workspace/cisco_ios/spec/acceptance/ntp_server_spec.rb:1
+/home/rsherman/workspace/cisco_ios/.bundle/gems/ruby/2.3.0/gems/beaker-3.31.0/bin/beaker:9
+/home/rsherman/.rbenv/versions/2.3.3/lib/ruby/gems/2.3.0/gems/bundler-1.13.7/exe/bundle:34
+/home/rsherman/.rbenv/versions/2.3.3/lib/ruby/gems/2.3.0/gems/bundler-1.13.7/exe/bundle:26
+/home/rsherman/.rbenv/versions/2.3.3/bin/bundle:22
+/home/rsherman/.rbenv/versions/2.3.3/bin/bundle:22
+Begin teardown
+End teardown
+]]>
+      </system-out>
+    </testcase>
+  </testsuite>
+</testsuites>
