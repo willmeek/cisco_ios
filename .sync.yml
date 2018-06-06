@@ -8,8 +8,8 @@
     Metrics/BlockNesting:
       Max: 4
 .travis.yml:
-  env:
-  - 'COVERAGE=yes'
+  global_env:
+    - 'COVERAGE=yes'
 Gemfile:
   optional:
     ':default':
