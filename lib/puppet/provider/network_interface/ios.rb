@@ -65,18 +65,20 @@ unless PuppetX::CiscoIOS::Check.use_old_netdev_type
     end
 
     def set(context, changes)
+      context.device.config_save('running-config', 'flash:puppet_backup_running-config')
       changes.each do |name, change|
         should = change[:should]
         context.updating(name) do
           update(context, name, should)
         end
       end
+      context.device.erase_config('flash:puppet_backup_running-config')
     end
 
     def update(context, name, should)
       array_of_commands_to_run = Puppet::Provider::NetworkInterface::NetworkInterface.commands_from_instance(should)
       array_of_commands_to_run.each do |command|
-        context.device.run_command_interface_mode(name, command)
+        context.device.run_command_interface_mode(name, command, true)
       end
     end
   end

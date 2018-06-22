@@ -28,20 +28,40 @@ module Puppet::Util::NetworkDevice::Cisco_ios # rubocop:disable Style/ClassAndMo
     attr_reader :connection
     attr_accessor :url, :transport, :facts, :commands
 
-    def send_command(connection_to_use, options, debug = false)
+    def send_command(connection_to_use, options, debug = false, use_rollback = false, check_for_failure = true)
       return_value = connection_to_use.cmd(options)
       unknown_command = commands['default']['unknown_command']
       invalid_input = commands['default']['invalid_input']
       incomplete_command = commands['default']['incomplete_command']
       command_rejected = Regexp.new(%r{#{commands['default']['command_rejected']}})
-      if return_value =~ %r{#{unknown_command}|#{invalid_input}|#{incomplete_command}|#{command_rejected}}
+      if check_for_failure && return_value =~ %r{#{unknown_command}|#{invalid_input}|#{incomplete_command}|#{command_rejected}}
         sent_string = if options.is_a?(Hash)
                         options['String']
                       else
                         options
                       end
+        if use_rollback
+          if config_diff('flash:puppet_backup_running-config', 'system:running-config')
+            Puppet.debug('Rolling back to previous running-config')
+            require 'pry'
+            binding.pry
+            config_save('flash:puppet_backup_running-config', 'running-config')
+          end
+        end
         raise "'#{return_value}' Error sending '#{sent_string}'"
       end
+
+      re_confirm = Regexp.new(%r{#{commands['default']['confirm']}})
+      # confirm prompt eg.
+      #
+      #   Subinterfaces configured on this interface will not be available after switchport.
+      #   Proceed with the command? [confirm]
+      #
+      #   Delete flash:puppet_backup_running-config? [confirm]
+      if return_value =~ %r{#{re_confirm}}
+        connection_to_use.cmd('')
+      end
+
       if debug
         caller.each do |line|
           if line =~ %r{puppet/provider}
@@ -110,7 +130,7 @@ module Puppet::Util::NetworkDevice::Cisco_ios # rubocop:disable Style/ClassAndMo
       false
     end
 
-    def run_command_enable_mode(command)
+    def run_command_enable_mode(command, check_for_failure=true)
       re_enable = Regexp.new(%r{#{commands['default']['enable_prompt']}})
       re_conf_t = Regexp.new(%r{#{commands['default']['config_prompt']}})
       if retrieve_mode == ModeState::CONF_T
@@ -123,10 +143,10 @@ module Puppet::Util::NetworkDevice::Cisco_ios # rubocop:disable Style/ClassAndMo
         send_command(connection, enable_cmd)
         send_command(connection, @enable_password)
       end
-      send_command(connection, command, true)
+      send_command(connection, command, true, false, check_for_failure)
     end
 
-    def run_command_conf_t_mode(command)
+    def run_command_conf_t_mode(command, use_rollback=false)
       re_conf_t = Regexp.new(%r{#{commands['default']['config_prompt']}})
       conf_t_cmd = { 'String' => 'conf t', 'Match' => re_conf_t }
       if retrieve_mode_special_config_mode
@@ -136,10 +156,10 @@ module Puppet::Util::NetworkDevice::Cisco_ios # rubocop:disable Style/ClassAndMo
       elsif retrieve_mode == ModeState::ENABLED
         send_command(connection, conf_t_cmd)
       end
-      send_command(connection, command, true)
+      send_command(connection, command, true, use_rollback)
     end
 
-    def run_command_interface_mode(interface_name, command)
+    def run_command_interface_mode(interface_name, command, use_rollback=false)
       conf_if_cmd = "interface #{interface_name}"
       if retrieve_mode != ModeState::CONF_INTERFACE
         run_command_conf_t_mode(conf_if_cmd)
@@ -148,80 +168,73 @@ module Puppet::Util::NetworkDevice::Cisco_ios # rubocop:disable Style/ClassAndMo
           raise "Could not enter interface mode for interface #{interface_name}"
         end
       end
-      prompt = send_command(connection, command, true)
-      re_conf_confirm = Regexp.new(%r{#{commands['default']['network_trunk_confirm']}})
-      # Network trunk confirm prompt eg.
-      #   Subinterfaces configured on this interface will not be available after switchport.
-      #   Proceed with the command? [confirm]
-      if prompt.match(re_conf_confirm)
-        send_command(connection, '', true)
-      end
+      send_command(connection, command, true, use_rollback)
       # Exit out of interface mode to save changes
       send_command(connection, 'exit', true)
     end
 
-    def run_command_radius_mode(radius_name, command)
+    def run_command_radius_mode(radius_name, command, use_rollback=false)
       re_conf_radius = Regexp.new(%r{#{commands['default']['radius_prompt']}})
       conf_radius_cmd = { 'String' => "aaa group server radius #{radius_name}", 'Match' => re_conf_radius }
       if retrieve_mode != ModeState::CONF_RADIUS_SERVER_GROUP
         run_command_conf_t_mode(conf_radius_cmd)
       end
-      send_command(connection, command, true)
+      send_command(connection, command, true, use_rollback)
       # Exit out of radius mode to save changes
       send_command(connection, 'exit', true)
     end
 
-    def run_command_radius_server_mode(radius_name, command)
+    def run_command_radius_server_mode(radius_name, command, use_rollback=false)
       re_conf_radius_server = Regexp.new(%r{#{commands['default']['radius_server_prompt']}})
       conf_radius_server_cmd = { 'String' => "radius server #{radius_name}", 'Match' => re_conf_radius_server }
       if retrieve_mode != ModeState::CONF_RADIUS_SERVER
         run_command_conf_t_mode(conf_radius_server_cmd)
       end
-      send_command(connection, command, true)
+      send_command(connection, command, true, use_rollback)
       # Exit out of radius server mode to save changes
       send_command(connection, 'exit', true)
     end
 
-    def run_command_tacacs_mode(tacacs_name, command)
+    def run_command_tacacs_mode(tacacs_name, command, use_rollback=false)
       re_conf_tacacs = Regexp.new(%r{#{commands['default']['tacacs_prompt']}})
       conf_tacacs_cmd = { 'String' => "tacacs server #{tacacs_name}", 'Match' => re_conf_tacacs }
       if retrieve_mode != ModeState::CONF_TACACS
         run_command_conf_t_mode(conf_tacacs_cmd)
       end
-      send_command(connection, command, true)
+      send_command(connection, command, true, use_rollback)
       # Exit out of tacacs mode to save changes
       send_command(connection, 'exit', true)
     end
 
-    def run_command_vlan_mode(vlan_name, command)
+    def run_command_vlan_mode(vlan_name, command, use_rollback=false)
       re_conf_vlan = Regexp.new(%r{#{commands['default']['vlan_prompt']}})
       conf_vlan_cmd = { 'String' => "vlan #{vlan_name}", 'Match' => re_conf_vlan }
       if retrieve_mode != ModeState::CONF_VLAN
         run_command_conf_t_mode(conf_vlan_cmd)
       end
-      send_command(connection, command, true)
+      send_command(connection, command, true, use_rollback)
       # Exit out of vlan mode to save changes
       send_command(connection, 'exit', true)
     end
 
-    def run_command_tacacs_server_group_mode(tacacs_server_group_name, command)
+    def run_command_tacacs_server_group_mode(tacacs_server_group_name, command, use_rollback=false)
       re_conf_tacacs_server_group = Regexp.new(%r{#{commands['default']['tacacs_server_group_prompt']}})
       conf_tacacs_server_group_cmd = { 'String' => "aaa group server tacacs #{tacacs_server_group_name}", 'Match' => re_conf_tacacs_server_group }
       if retrieve_mode != ModeState::CONF_TACACS_SERVER_GROUP
         run_command_conf_t_mode(conf_tacacs_server_group_cmd)
       end
-      send_command(connection, command, true)
+      send_command(connection, command, true, use_rollback)
       # Exit out of tacacs server group mode to save changes
       send_command(connection, 'exit', true)
     end
 
-    def run_command_mst_mode(command)
+    def run_command_mst_mode(command, use_rollback=false)
       re_conf_mst = Regexp.new(%r{#{commands['default']['mst_prompt']}})
       conf_mst_cmd = { 'String' => 'spanning-tree mst configuration', 'Match' => re_conf_mst }
       if retrieve_mode != ModeState::CONF_MST
         run_command_conf_t_mode(conf_mst_cmd)
       end
-      send_command(connection, command, true)
+      send_command(connection, command, true, use_rollback)
       # Exit out of mst mode to save changes
       send_command(connection, 'exit', true)
     end
@@ -274,14 +287,34 @@ module Puppet::Util::NetworkDevice::Cisco_ios # rubocop:disable Style/ClassAndMo
       return_facts.merge(facts)
     end
 
-    def running_config_save(dest = 'startup-config')
+    def config_diff(conf1, conf2)
+      result = run_command_enable_mode("show archive config differences #{conf1} #{conf2}")
+      unless result =~ %r{No changes were found}
+        Puppet.debug("Differences found between running config before and after apply attempt - #{result}")
+        return true
+      end
+      false
+    end
+
+    def erase_config(config_name)
+      re_confirm = Regexp.new(%r{#{commands['default']['confirm']}})
+      run_command_enable_mode('String' => "delete #{config_name}", 'Match' => %r{#{re_confirm}|#})
+    end
+
+    def config_save(src = 'running-config', dest = 'startup-config')
       shhh_command = 'file prompt quiet'
-      copy_command = "copy running-config #{dest}"
-      run_command_conf_t_mode(shhh_command)
-      copy_result = run_command_enable_mode(copy_command)
+      run_command_conf_t_mode(shhh_command, false)
+      copy_command = "copy #{src} #{dest}"
+      copy_result = run_command_enable_mode(copy_command, check_for_failure=false)
       copy_status = copy_result.match(%r{\[OK\]|\d+ bytes copied in \d+\.\d+ secs \(\d+ bytes\/sec\)})
       raise "Unexpected results for: #{copy_command}" unless copy_status
+      # Clear buffer of any unexpectedness eg. applying crypto keys from config
+      run_command_enable_mode('', check_for_failure=false)
       copy_status
+    end
+
+    def running_config_save(dest = 'startup-config')
+      config_save('running-config', dest)
     end
   end
 end

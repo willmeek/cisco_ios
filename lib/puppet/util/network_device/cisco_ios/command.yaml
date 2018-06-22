@@ -18,4 +18,4 @@ default:
   mst_prompt: '^.*\(config-mst\).*$'
   std_nacl_prompt: '^.*\(config-std-nacl\).*$'
   ext_nacl_prompt: '^.*\(config-ext-nacl\).*$'
-  network_trunk_confirm: '.*Proceed with the command\? \[confirm\].*$'
+  confirm: '.*\[confirm\].*$'
