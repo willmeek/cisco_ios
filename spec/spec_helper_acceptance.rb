@@ -123,6 +123,12 @@ EOS
         # install puppet-resource_api on to the server
         on(host, 'puppetserver gem install puppet-resource_api --no-ri --no-rdoc')
         apply_manifest('include cisco_ios')
+        on host,"echo >> /root/Puppetfile"
+        on host,"echo \"mod 'netdev_stdlib',\" >> /root/Puppetfile"
+        on host,"echo \"  :git    => 'https://github.com/#{ENV['NETDEV_STDLIB_USER']}/netdev_stdlib',\" >> /root/Puppetfile"
+        on host,"echo \"  :ref => '#{ENV['NETDEV_STDLIB_REF']}'\" >> /root/Puppetfile"
+        on host,"/opt/puppetlabs/puppet/bin/r10k puppetfile install /root/Puppetfile -v --moduledir /etc/puppetlabs/code/environments/production/modules", {:acceptable_exit_codes => [0]}
+        on host, puppet('plugin','download'), :acceptable_exit_codes => [0,1])
         on host, puppet('plugin', 'download', '--server', host.to_s)
         on host, puppet('device', '-v', '--waitforcert', '0', '--user', 'root', '--server', host.to_s), acceptable_exit_codes: [0, 1]
         on host, puppet('cert', 'sign', '--all'), acceptable_exit_codes: [0, 24]
