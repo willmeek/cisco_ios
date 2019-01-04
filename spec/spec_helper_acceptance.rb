@@ -32,6 +32,8 @@ end
 run_puppet_install_helper
 install_module_on(hosts)
 install_module_dependencies_on(hosts)
+on(master, 'yum -y install git')
+on(master, "git clone https://github.com/puppetlabs/netdev_stdlib.git /etc/puppetlabs/code/environments/production/modules/netdev_stdlib")
 
 def beaker_opts
   @env ||= {
