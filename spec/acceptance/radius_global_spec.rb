@@ -7,6 +7,17 @@ describe 'radius_global' do
     ios_config { "enable aaa":
       command => 'aaa new-model'
     }
+    network_vlan { "42":
+      shutdown => true,
+      ensure => present,
+    }
+    network_vlan { "43":
+      shutdown => true,
+      ensure => present,
+    }
+    ios_config { "enable aaa":
+      command => 'aaa new-model'
+    }
     radius_global { "default":
       key => 'jim',
       key_format => 3,
